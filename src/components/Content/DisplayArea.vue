@@ -1,94 +1,12 @@
 <template>
-    <vue-qrcode ref="qrcode" :value="hello" :options="options"></vue-qrcode>
-    <p ref="DisplayError"></p>
-    <div class="container"> <button
-            v-on:click="getinput(InputData, hexCode, hexCode2, InputData2, InputData3, selectedImage, this.$refs.qrcode.$el)"><span>Generate
-                code</span></button>
+    <div class="container">
                 </div>
 </template>
 
 
 <script>
-import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 export default {
-    components: { VueQrcode },
-    props: ['InputData', 'hexCode', 'hexCode2', 'InputData2', 'InputData3', 'selectedImage'],
-    data() {
-        return {
-            hello: "hello",
-            options: {
-                maskPattern: 7,
-                scale: 4,
-                color: {
-                    dark: '#000000',
-                    light: '#ffffff',
-                },
-                margin: 0
-            }
-        }
-    },
-    methods: {
-        getinput(InputData, hexCode, hexCode2, InputData2, InputData3, selectedImage, canvas) {
-
-            try {
-                if (!InputData) throw new Error("InputData is not defined")
-                const context = canvas.getContext('2d');
-                const image = new Image();
-
-                image.src = selectedImage;
-                image.crossorigin = 'anonymous';
-                image.onload = () => {
-                    const coverage = 0.15;
-                    const width = Math.round(canvas.width * coverage);
-                    const x = (canvas.width - width) / 2;
-                    console.log(canvas.width)
-
-                    this.drawImage(context, image, x, x, width, width);
-                };
-                this.hello = InputData
-                this.options.maskPattern = InputData2
-                this.options.scale = InputData3
-                this.options.color.dark = hexCode
-                this.options.color.light = hexCode2
-                // onReady()
-            } catch (error) {
-                if (error.message === 'InputData is not defined') {
-                    this.$refs.DisplayError.textContent = "Input is empty"
-                    setTimeout(() => {
-                        this.$refs.DisplayError.textContent = ""
-                    }, 2000)
-                    console.log("error: no input text")
-                } else {
-                    console.log(error)
-                    this.error = error.message
-                }
-            }
-
-        },
-        // onReady(canvas) {
-        // },
-        drawImage(context, image, x, y, width, height, radius = 4) {
-            context.shadowOffsetX = 0;
-            context.shadowOffsetY = 2;
-            context.shadowBlur = 4;
-            context.shadowColor = '#00000040';
-            context.lineWidth = 8;
-            context.beginPath();
-            context.moveTo(x + radius, y);
-            context.arcTo(x + width, y, x + width, y + height, radius);
-            context.arcTo(x + width, y + height, x, y + height, radius);
-            context.arcTo(x, y + height, x, y, radius);
-            context.arcTo(x, y, x + width, y, radius);
-            context.closePath();
-            context.strokeStyle = '#fff';
-            context.stroke();
-            context.clip();
-            context.fillStyle = '#fff';
-            context.fillRect(x, x, width, height);
-            context.drawImage(image, x, x, width, height);
-        },
-    }
 }
 </script>
 
